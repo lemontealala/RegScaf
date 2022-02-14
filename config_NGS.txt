@@ -1,0 +1,12 @@
+# library_name, type, insert_size, insert_size_deviation, lib_path1, lib_path2
+800, PE,  800, 10, /home/limengtian/RegCodes_final/test_data/frag8001.fq, /home/limengtian/RegCodes_final/test_data/frag8002.fq
+2k, MP,  2000, 200, /home/limengtian/RegCodes_final/test_data/frag2k1.fq, /home/limengtian/RegCodes_final/test_data/frag2k2.fq
+
+# parameters
+thread, 40
+short_seme_penal, 2
+long_seme_penal, 2
+BlasrminMatch, 15
+reg_m, 12
+ScafIter, 2
+RegScafPath, /home/limengtian/RegCodes_final
