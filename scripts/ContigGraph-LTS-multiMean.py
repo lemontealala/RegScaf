@@ -34,7 +34,7 @@ parser.add_argument('-M', type = int,default=200, help='Max Error allowed in the
 parser.add_argument('-z', type = int,default=2, help='the minimum size of the cluster considered in regression, should below the parameter -m but not too far')
 parser.add_argument('-s', type = int ,default=300, help='minimum length of the contig considered in the connected contig graph')
 parser.add_argument('-mg', type = int ,default=3000, help='max graph size restricted for better effect')
-parser.add_argument('-c', action="store_true", help= 'Correct Insert-size according GapEst')
+#parser.add_argument('-c', action="store_true", help= 'Correct Insert-size according GapEst')
 parser.add_argument('-msd', type = int, default=6, help='minimum size of the cluster in which the library variance is replaced with the cluster variance')
 
 def WriteFinalFile(Solution_mat,Solution_cov,current_ctg,Contig_order,CtgDirection):
@@ -298,9 +298,9 @@ max_graph_size = int(args.mg)
 maxerror = int(args.M)
 min_len = int(args.s)
 library_name = []
-library_list=[]
-InsertSize_list=[]
-LibType_list=[]
+library_list = []
+InsertSize_list = []
+LibType_list = []
 LibSd_List = []
 for line in libraryfile:
 	library_line = line.strip().split(' ')
@@ -308,11 +308,11 @@ for line in libraryfile:
 	LibType_list.append(library_line[1])
 	library_list.append(library_line[2])
 	Libsd = round(float(library_line[4]),2)
-	LibIns = int(library_line[3]) 
-	LibIns_c = LibIns+int(Libsd**2/(1+LibIns))
-	print("LibIns:",LibIns,LibIns_c)
-	if args.c:  #correction according GapEst
-		LibIns = LibIns_c
+	LibIns = int(library_line[3])
+	#LibIns_c = LibIns+int(Libsd**2/(1+LibIns))
+	#print("LibIns:",LibIns,LibIns_c)
+	#if args.c:  #correction according GapEst
+	#	LibIns = LibIns_c
 	InsertSize_list.append(LibIns)
 	LibSd_List.append(Libsd)
 	
@@ -320,6 +320,7 @@ result = os.popen('tail -1 '+args.d)
 res = result.read().split()
 ContigCount = int(res[0][6:])
 Contiglen_list = GetContigLen(ContigCount)
+#total_len = sum(Contiglen_list)
 
 ## Get link information from mapping result
 
@@ -394,14 +395,16 @@ for t in range(len(library_list)):
 
 ##Choose link truc:
 all_link = list(link_dict.values())
-#all_link_1 = [all_link[x] for x in range(len(all_link)) if all_link[x] !=1]
-perc = max(1-2*ContigCount/len(all_link),0.7)
-truc_c = np.percentile(all_link,perc*100)
+all_link_1 = [all_link[x] for x in range(len(all_link)) if all_link[x] !=1]
+perc = 0.1 #max(1-2*ContigCount/len(all_link),0.1)
+truc_p = int(np.percentile(all_link_1,perc*100))
+#truc_c = int(sum(all_link)*(min(np.median(Contiglen_list),2000)-1000)/total_len)
 #if truc_c != truc:
 #	truc = max(truc,truc_c)
 if truc==0:	#default
-	truc = truc_c
-print("Choose truc:",truc,perc)
+	truc = truc_p
+print("Total links (paired reads):",sum(all_link),"10% quantile:",truc_p)#"Total bases on contigs:",total_len,
+print("Choose truc:",truc)
 
 #Construct contig graph
 G=nx.Graph()
