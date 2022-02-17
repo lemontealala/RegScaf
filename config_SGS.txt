@@ -8,5 +8,5 @@ short_seme_penal, 2
 long_seme_penal, 2
 BlasrminMatch, 15
 reg_m, 12
-ScafIter, 2
-RegScafPath, /home/limengtian/RegCodes_final
+ScafIter, 3
+RegScafPath, /home/limengtian/Downloads/RegScaf/
