@@ -44,3 +44,8 @@ we added an assessing module based on the regression model, and the module is no
 
 `bash pipeline_assess.sh scaffolds.fa outdir`
 
+## Citation
+If you use RegScaf in your researchment, please include the following article in your reference list:
+>> Mengtian Li, Lei M Li, RegScaf: a regression approach to scaffolding, Bioinformatics, 2022; btac174, https://doi.org/10.1093/bioinformatics/btac174
+
+
