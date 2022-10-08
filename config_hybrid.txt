@@ -2,7 +2,7 @@
 2k, MP,  2000, 200, /home/limengtian/RegCodes_final/test_data/frag2k1.fq, /home/limengtian/RegCodes_final/test_data/frag2k2.fq
 PacBio1, 3GS, 0, 0, /home/limengtian/RegCodes_final/test_data/ecoli_PacBioLongreads.fa, NA
 
-# parameters(thread: the number of threads; short_seme_penal: Maximum mismatch number allowed when mapping PE libraries; long_seme_penal: Maximum mismatch number allowed when mapping MP libraries; BlasrminMatch:Minimum seed length in Blasr when mapping 3GS reads; reg_m: the minimum link number to add an edge in initial contig graph; ScafIter: how many iterations will be conducted on quasi-scaffolds; RegScafPath: path to your RegScaf codes)
+# parameters (thread: the number of threads; short_seme_penal: Maximum mismatch number allowed when mapping PE libraries; long_seme_penal: Maximum mismatch number allowed when mapping MP libraries; BlasrminMatch:Minimum seed length in Blasr when mapping 3GS reads; reg_m: the minimum link number to add an edge in initial contig graph; ScafIter: how many iterations will be conducted on quasi-scaffolds; RegScafPath: path to your RegScaf codes)
 thread, 40
 short_seme_penal, 2
 long_seme_penal, 2
