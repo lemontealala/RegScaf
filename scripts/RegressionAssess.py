@@ -61,7 +61,7 @@ def FindBreakPoint(scaf_name,select_row,Coff_mat,current_ctg):
 	for l in broken_scaffolds:
 		print(l,file=fout_Broken)
 	fout_Broken.close()
-	return scaffold_broken
+	# return scaffold_broken
 
 def AssessScaf(scaf_name,scaf):
 	global contig_list
@@ -119,7 +119,7 @@ def AssessScaf(scaf_name,scaf):
 					y_value = np.median(mi)
 					if CtgDirection[n1]==-1:
 						y_value=-y_value
-					print("c1",c1,"c2",c2,len(multi_mean),len(mi),"%.2f"%np.sqrt(msd),"%.4f"%Weight_mat[r,r],y_value)
+					# print("c1",c1,"c2",c2,len(multi_mean),len(mi),"%.2f"%np.sqrt(msd),"%.4f"%Weight_mat[r,r],y_value)
 					y_sep.append(y_value)
 					Coff_mat[r,n1] = -1
 					Coff_mat[r,n2] = 1
@@ -128,8 +128,10 @@ def AssessScaf(scaf_name,scaf):
 	Weight_mat = Weight_mat[0:r,0:r]
 	y=np.array(y_sep)
 	scaf_solution = scaf['position']
+	print("Shape:", Coff_mat.shape, y.shape,len(scaf_solution))
 	Residual = np.dot(Coff_mat,np.array(scaf_solution))-y
-	select_row = np.arange(r)[(Residual<args.M)]
+	print("Residual:", np.round_(Residual))#, )
+	select_row = np.arange(r)[(abs(Residual)<args.M)]
 	FindBreakPoint(scaf_name,select_row,Coff_mat,current_ctg)
 
 
@@ -273,28 +275,25 @@ with open(args.e,'r') as fin:
         record = line.strip().split()
         if len(record) < 6 and record[0][0]!='~':
             if scaffold_name!=0:
-                scaffold_dic[scaffold_name]={'ctg_list':ctg_list,"orientation":orientation,"length":length,"position":position}
+                scaffold_dic[scaffold_name]={'ctg_list':ctg_list,"orientation":orientation,"length":length,"position":position[:-1]}
                 #print(scaffold_name,scaffold_dic[scaffold_name])
             scaffold_name=record[0]
             ctg_list = []
             orientation = []
             length = []
-            position = []
+            position = [0]
         elif len(record) == 6:
             ctg_list.append(int(record[0]))
             orientation.append(record[1])
             length.append(int(record[2]))
-            if len(position)==0:
-                position.append(0)
-            else:
-                position.append(position[-1]+int(record[2])+int(record[4]))
-    scaffold_dic[scaffold_name]={'ctg_list':ctg_list,"orientation":orientation,"length":length,"position":position}        
+            position.append(position[-1]+int(record[2])+int(record[4])) ##start point of the next contig
+    scaffold_dic[scaffold_name]={'ctg_list':ctg_list,"orientation":orientation,"length":length,"position":position[:-1]}        
 
 
 ScafFile = open("Scaf_dict",'w')
 ScafFile.write(str(scaffold_dic))
 ScafFile.close()
-'''
+
 for scaf_name,scaf_item in scaffold_dic.items():
 	AssessScaf(scaf_name,scaf_item)
 
@@ -306,3 +305,4 @@ for scaf_name,scaf_item in scaffold_dic.items():
 pool.close()
 pool.join()
 pool.terminate()
+'''
